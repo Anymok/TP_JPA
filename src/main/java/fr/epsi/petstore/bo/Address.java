@@ -1,21 +1,31 @@
 package fr.epsi.petstore.bo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "ADDRESS")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
+    @Column(name = "NUMBER")
     private String number;
+    @Column(name = "STREET")
     private String street;
+    @Column(name = "ZIPCODE")
     private String zipCode;
+    @Column(name = "CITY")
     private String city;
 
     public Address() {
+    }
+
+    public Address(String number, String street, String zipCode, String city) {
+        this.number = number;
+        this.street = street;
+        this.zipCode = zipCode;
+        this.city = city;
     }
 
     public Long getId() {

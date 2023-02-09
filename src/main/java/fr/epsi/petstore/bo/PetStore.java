@@ -1,34 +1,48 @@
 package fr.epsi.petstore.bo;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "PETSTORE")
 public class PetStore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ID")
+    private Integer id;
+    @Column(name = "NAME")
     private String name;
+    @Column(name = "MANAGERNAME")
     private String managerName;
+    @OneToOne
+    private Address address;
+    @OneToMany(mappedBy = "petStore")
+    private Set<Animal> animals;
     @ManyToMany
     @JoinTable(name = "STO_PRO",
         joinColumns = @JoinColumn(name = "ID_STO", referencedColumnName = "ID"),
-        inverseJoinColumns = @JoinColumn(name = "ID_PRO", referencedColumnName = "ID")
-    )
+        inverseJoinColumns = @JoinColumn(name = "ID_PRO", referencedColumnName = "ID"))
     private Set<Product> products;
-    @OneToMany(mappedBy = "petStore")
-    private Set<Animal> animals;
-    @OneToOne
-    private Address address;
 
+    {
+        animals = new HashSet<>();
+        products = new HashSet<>();
+    }
     public PetStore() {
     }
 
-    public Long getId() {
+    public PetStore(String name, String managerName, Address address) {
+        this.name = name;
+        this.managerName = managerName;
+        this.address = address;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
