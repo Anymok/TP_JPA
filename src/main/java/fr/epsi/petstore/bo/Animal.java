@@ -10,7 +10,7 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long id;
+    private Integer id;
     @Column(name = "BIRTH")
     private LocalDate birth;
     @Column(name = "COULEUR")
@@ -27,11 +27,11 @@ public class Animal {
         this.couleur = couleur;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

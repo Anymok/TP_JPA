@@ -7,6 +7,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,38 +16,102 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
-        Address address = new Address("5", "Rue Voltaire", "44000", "Nantes");
-        em.persist(address);
-        PetStore petStore = new PetStore("Hariet & Rosie", "Arthur", address);
+        // Animalerie Nantes
+        Address adr_Nantes = new Address("7", "Bd Lelasseur", "44000", "Nantes");
+        em.persist(adr_Nantes);
+        PetStore petStore_Nantes = new PetStore("Clochette & Cie", "Martine", adr_Nantes);
+        em.persist(petStore_Nantes);
 
-        Product productFood = new Product("CRO001", "Croquette", ProdType.FOOD, 14.95);
-        Product productAccessory = new Product("ARB001", "Arbre à chat", ProdType.ACCESSORY, 50);
-        Product productCleaning = new Product("BRO001", "Brosse", ProdType.CLEANNING, 4.50);
+        // Animalerie Paris
+        Address adr_Paris = new Address("91", "Rue de la Pompe", "75116", "Paris");
+        em.persist(adr_Paris);
+        PetStore petStore_Paris = new PetStore("Les Animaux de Paris", "René", adr_Paris);
+        em.persist(petStore_Paris);
 
-        Animal animalCat = new Cat(LocalDate.now(), "Roux", "007");
-        Animal animalFishFresh = new Fish(LocalDate.now(), "Rouge", FishLivEnv.FRESH_WATER);
-        Animal animalFishSea = new Fish(LocalDate.now(), "Vert", FishLivEnv.SEA_WATER);
+        // Animalerie Le Havre
+        Address adr_LeHavre = new Address("83", "Rue Louis Brindeau", "76600", "Le Havre");
+        em.persist(adr_LeHavre);
+        PetStore petStore_LeHavre = new PetStore("Oscar et Ogustine", "Arthur", adr_LeHavre);
+        em.persist(petStore_LeHavre);
 
+        // Produit
+        Product product1 = new Product("528297.0", "Souris Aumüller Baldi Édition de Noël",ProdType.ACCESSORY, 3.49);
+        Product product2 = new Product("47497.13", "Royal Canin Sterilised 37",ProdType.FOOD, 6.19);
+        Product product3 = new Product("472234.16", "Friandises Pedigree Dentastix 100",ProdType.FOOD, 30.29);
+        Product product4 = new Product("178103.4", "Litière minérale Catsan Hygiène plus pour chat",ProdType.CLEANNING, 15.49);
 
+        // Persit product
+        em.persist(product1);
+        em.persist(product2);
+        em.persist(product3);
+        em.persist(product4);
 
+        // Animal
+        Cat cat = new Cat(LocalDate.now(), "Roux", "007");
+        Cat cat1 = new Cat(LocalDate.now(), "Noir", "008");
+        Cat cat2 = new Cat(LocalDate.now(), "Blanc", "009");
+        Fish fishFresh = new Fish(LocalDate.now(), "Rouge", FishLivEnv.FRESH_WATER);
+        Fish fishSea = new Fish(LocalDate.now(),"Jaune" , FishLivEnv.SEA_WATER);
+        Fish fishSea1 = new Fish(LocalDate.now(),"Violet" , FishLivEnv.SEA_WATER);
 
-        petStore.getProducts().add(productFood);
-        petStore.getProducts().add(productAccessory);
-        petStore.getProducts().add(productCleaning);
+        // Persist Animal
+        em.persist(cat);
+        em.persist(cat1);
+        em.persist(cat2);
+        em.persist(fishFresh);
+        em.persist(fishSea);
+        em.persist(fishSea1);
 
-        petStore.getAnimals().add(animalCat);
-        petStore.getAnimals().add(animalFishFresh);
-        petStore.getAnimals().add(animalFishSea);
+        // Nantes
+        petStore_Nantes.getProducts().add(product1);
+        petStore_Nantes.getProducts().add(product4);
+        petStore_Nantes.getAnimals().add(cat);
 
+        // Paris
+        petStore_Paris.getProducts().add(product2);
+        petStore_Paris.getProducts().add(product4);
+        petStore_Nantes.getAnimals().add(fishFresh);
 
-        PetStore petStore1 = em.find(PetStore.class, 1);
-        if(petStore1 != null){
-            System.out.println(petStore1);
+        // Le Havre
+        petStore_LeHavre.getProducts().add(product3);
+        petStore_LeHavre.getProducts().add(product4);
+        petStore_Nantes.getAnimals().add(fishSea);
+
+        // Persist
+        em.persist(petStore_Nantes);
+        em.persist(petStore_Paris);
+        em.persist(petStore_LeHavre);
+
+        // Fermer la transaction
+        em.getTransaction().commit();
+
+        // Affiche les animaux de l'animalerie Nantes
+        PetStore petStoreNantes = em.find(PetStore.class, 1);
+        if(petStoreNantes != null) {
+            System.out.println("=============== Liste des animaux dans l'animalerie de " + petStoreNantes.getName() +" à " + petStoreNantes.getAddress().getCity() + "  ================");
+            for(Animal item : petStoreNantes.getAnimals()) {
+                System.out.println(item.toString());
+            }
         }
 
+        // Affiche les produits de l'animalerie Paris
+        PetStore petStoreParis = em.find(PetStore.class, 2);
+        if(petStoreParis != null) {
+            System.out.println("=============== Liste des produits dans l'animalerie de " + petStoreParis.getName() +" à " + petStoreParis.getAddress().getCity() + "  ================");
+            for(Product item : petStoreParis.getProducts()) {
+                System.out.println(item.toString());
+            }
+        }
 
+        // Affiche les produits de l'animalerie Le Havre
+        PetStore petStoreLeHavre = em.find(PetStore.class, 3);
+        if(petStoreLeHavre != null) {
+            System.out.println("=============== Liste des produits dans l'animalerie de " + petStoreLeHavre.getName() +" à " + petStoreLeHavre.getAddress().getCity() + "  ================");
+            for(Product item : petStoreLeHavre.getProducts()) {
+                System.out.println(item.toString());
+            }
+        }
 
-        em.getTransaction().commit();
         em.close();
         emf.close();
     }
