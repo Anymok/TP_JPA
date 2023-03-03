@@ -47,12 +47,12 @@ public class Main {
         em.persist(product4);
 
         // Animal
-        Cat cat = new Cat(LocalDate.now(), "Roux", "007");
-        Cat cat1 = new Cat(LocalDate.now(), "Noir", "008");
-        Cat cat2 = new Cat(LocalDate.now(), "Blanc", "009");
-        Fish fishFresh = new Fish(LocalDate.now(), "Rouge", FishLivEnv.FRESH_WATER);
-        Fish fishSea = new Fish(LocalDate.now(),"Jaune" , FishLivEnv.SEA_WATER);
-        Fish fishSea1 = new Fish(LocalDate.now(),"Violet" , FishLivEnv.SEA_WATER);
+        Animal cat = new Cat(LocalDate.now(), "Roux", petStore_Nantes,"007");
+        Animal cat1 = new Cat(LocalDate.now(), "Noir", petStore_Nantes, "008");
+        Animal cat2 = new Cat(LocalDate.now(), "Blanc", petStore_Nantes, "009");
+        Animal fishFresh = new Fish(LocalDate.now(), "Rouge", petStore_Paris, FishLivEnv.FRESH_WATER);
+        Animal fishSea = new Fish(LocalDate.now(),"Jaune", petStore_LeHavre, FishLivEnv.SEA_WATER);
+        Animal fishSea1 = new Fish(LocalDate.now(),"Violet", petStore_LeHavre, FishLivEnv.SEA_WATER);
 
         // Persist Animal
         em.persist(cat);
@@ -66,16 +66,19 @@ public class Main {
         petStore_Nantes.getProducts().add(product1);
         petStore_Nantes.getProducts().add(product4);
         petStore_Nantes.getAnimals().add(cat);
+        petStore_Nantes.getAnimals().add(cat1);
+        petStore_Nantes.getAnimals().add(cat2);
 
         // Paris
         petStore_Paris.getProducts().add(product2);
         petStore_Paris.getProducts().add(product4);
-        petStore_Nantes.getAnimals().add(fishFresh);
+        petStore_Paris.getAnimals().add(fishFresh);
 
         // Le Havre
         petStore_LeHavre.getProducts().add(product3);
         petStore_LeHavre.getProducts().add(product4);
-        petStore_Nantes.getAnimals().add(fishSea);
+        petStore_LeHavre.getAnimals().add(fishSea);
+        petStore_LeHavre.getAnimals().add(fishSea1);
 
         // Persist
         em.persist(petStore_Nantes);
@@ -85,29 +88,38 @@ public class Main {
         // Fermer la transaction
         em.getTransaction().commit();
 
-        // Affiche les animaux de l'animalerie Nantes
+        // Affiche les produits et animaux de l'animalerie Nantes
         PetStore petStoreNantes = em.find(PetStore.class, 1);
         if(petStoreNantes != null) {
-            System.out.println("=============== Liste des animaux dans l'animalerie de " + petStoreNantes.getName() +" à " + petStoreNantes.getAddress().getCity() + "  ================");
+            System.out.println("=============== Liste des produits et animaux dans l'animalerie de " + petStoreNantes.getName() +" à " + petStoreNantes.getAddress().getCity() + "  ================");
+            for(Product item : petStoreNantes.getProducts()) {
+                System.out.println(item.toString());
+            }
             for(Animal item : petStoreNantes.getAnimals()) {
                 System.out.println(item.toString());
             }
         }
 
-        // Affiche les produits de l'animalerie Paris
+        // Affiche les produits et animaux de l'animalerie Paris
         PetStore petStoreParis = em.find(PetStore.class, 2);
         if(petStoreParis != null) {
-            System.out.println("=============== Liste des produits dans l'animalerie de " + petStoreParis.getName() +" à " + petStoreParis.getAddress().getCity() + "  ================");
+            System.out.println("=============== Liste des produits et animaux dans l'animalerie de " + petStoreParis.getName() +" à " + petStoreParis.getAddress().getCity() + "  ================");
             for(Product item : petStoreParis.getProducts()) {
+                System.out.println(item.toString());
+            }
+            for(Animal item : petStoreParis.getAnimals()) {
                 System.out.println(item.toString());
             }
         }
 
-        // Affiche les produits de l'animalerie Le Havre
+        // Affiche les produits et animaux de l'animalerie Le Havre
         PetStore petStoreLeHavre = em.find(PetStore.class, 3);
         if(petStoreLeHavre != null) {
-            System.out.println("=============== Liste des produits dans l'animalerie de " + petStoreLeHavre.getName() +" à " + petStoreLeHavre.getAddress().getCity() + "  ================");
+            System.out.println("=============== Liste des produits et animaux dans l'animalerie de " + petStoreLeHavre.getName() +" à " + petStoreLeHavre.getAddress().getCity() + "  ================");
             for(Product item : petStoreLeHavre.getProducts()) {
+                System.out.println(item.toString());
+            }
+            for(Animal item : petStoreLeHavre.getAnimals()) {
                 System.out.println(item.toString());
             }
         }

@@ -14,8 +14,8 @@ public class Cat extends Animal {
     public Cat() {
     }
 
-    public Cat(LocalDate birth, String couleur, String chipId) {
-        super(birth, couleur);
+    public Cat(LocalDate birth, String couleur, PetStore petStore, String chipId) {
+        super(birth, couleur, petStore);
         this.chipId = chipId;
     }
 
@@ -27,4 +27,11 @@ public class Cat extends Animal {
         this.chipId = chipId;
     }
 
+    @Override
+    public String toString() {
+        return "Cat{" +
+                super.toString() +
+                " chipId='" + chipId + '\'' +
+                '}';
+    }
 }

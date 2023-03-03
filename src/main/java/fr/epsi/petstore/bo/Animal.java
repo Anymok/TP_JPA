@@ -22,9 +22,10 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(LocalDate birth, String couleur) {
+    public Animal(LocalDate birth, String couleur, PetStore petStore) {
         this.birth = birth;
         this.couleur = couleur;
+        this.petStore = petStore;
     }
 
     public Integer getId() {
@@ -49,6 +50,14 @@ public class Animal {
 
     public void setCouleur(String couleur) {
         this.couleur = couleur;
+    }
+
+    public PetStore getPetStore() {
+        return petStore;
+    }
+
+    public void setPetStore(PetStore petStore) {
+        this.petStore = petStore;
     }
 
     @Override
